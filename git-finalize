@@ -1,0 +1,96 @@
+# git-finialize: Finialize Git projects to v1.0+
+# Copyright (C) 2021 Patric A.B
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#!/bin/bash
+
+FAIL=0
+
+# Open user directory
+cd $1
+
+# Check directory structure of working directory
+echo -e "Checking directory structure...\n"
+
+echo -n "Examples... "
+if [[ -z $(ls examples/) ]]
+then
+    FAIL=1
+    echo "not present"
+else
+    echo "present"
+fi
+
+echo -n "Unit tests... "
+if [[ -z $(ls tests/) ]]
+then
+    FAIL=1
+    echo "not present"
+else
+    echo "present"
+fi
+
+echo -n "Project LICENSE... "
+if [[ -z $(ls | grep LICENSE) ]]
+then
+    FAIL=1
+    echo "not present"
+else
+    echo "present"
+fi
+
+echo -e "Done\n"
+echo -e "Checking for comprehensive README...\n"
+
+echo -n "Install section... "
+if [[ -z $(cat README.md | grep Install) ]]
+then
+    FAIL=1
+    echo "not present"
+else
+    echo "present"
+fi
+
+echo -n "Usage section... "
+if [[ -z $(cat README.md | grep Usage) ]]
+then
+    FAIL=1
+    echo "not present"
+else
+    echo "present"
+fi
+
+echo -n "Test section... "
+if [[ -z $(cat README.md | grep Test) ]]
+then
+    FAIL=1
+    echo "not present"
+else
+    echo "present"
+fi
+
+echo -e "Done\n"
+
+if [[ $FAIL -eq 1 ]]
+then
+    echo "Error: some required parts of your project is not present"
+    echo "Check your project and try again"
+    exit 1
+fi
+
+git tag v1.0
+echo "Congratulations! Your project is now in v1.0"
+echo "You can push this tag to your remote by using the command"
+echo -e "\tgit push --tags\n"
